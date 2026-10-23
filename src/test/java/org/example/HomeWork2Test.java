@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Arrays;
+
 public class HomeWork2Test {
 
     @BeforeEach
@@ -119,4 +121,63 @@ else {
         }
     }
 
+    @Test
+    void findMaxTest() {
+        int [] numbers = new int[5];
+
+        for (int i = 0; i < numbers.length; i++) {
+            numbers[i] = (int) (Math.random() * 201) - 100;
+        }
+
+        int actual = HomeWork2.findMax(numbers);
+        int expected = numbers[0];
+        for (int num : numbers) {
+            if (num > expected) {
+                expected = num;
+            }
+        }
+
+        System.out.println("Numbers: " + Arrays.toString(numbers));
+        System.out.println("Actual: " + actual);
+        System.out.println("Expected: " + expected);
+
+        if (actual == expected) {
+            System.out.println("TEST PASSED");
+        } else {
+            System.out.println("TEST FAILED");
+        }
+    }
+
+    @Test
+    void reverseTest() {
+        String[] words = new String[5];
+
+        for (int i = 0; i < words.length; i++) {
+            words[i] = String.valueOf((int) (Math.random() * 100));
+        }
+
+        String[] actual = HomeWork2.reverse(words);
+        String[] expected = new String[words.length];
+
+        int rev = 0;
+        for (int i = words.length -1; i >= 0; i--) {
+            expected[rev] = words[i];
+            rev++ ;
+        }
+
+        System.out.println("Original: " + Arrays.toString(words));
+        System.out.println("Actual: " + Arrays.toString(actual));
+        System.out.println("Expected: " + Arrays.toString(expected));
+
+        if (Arrays.equals(actual, expected)) {
+            System.out.println("TEST PASSED");
+        } else {
+            System.out.println("TEST FAILED");
+        }
+    }
+
 }
+
+
+
+//git clone https://github.com/shabaqavlad-create/HomeWork2.git
