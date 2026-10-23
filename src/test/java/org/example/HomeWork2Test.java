@@ -6,6 +6,9 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.Arguments;
+import java.util.ArrayList;
+import java.util.List;
 
 import java.util.Arrays;
 
@@ -220,8 +223,165 @@ else {
             System.out.println("TEST FAILED");
         }
     }
-}
+
+    @RepeatedTest(5)
+    void hasBugTest() {
+        String[] variants = {"Info", "Warning", "Error", "Bug", "Test"};
+        String[] messages = new String[5];
+
+        for (int i = 0; i < messages.length; i++) {
+            int randomIndex = (int) (Math.random() * variants.length);
+            messages[i] = variants[randomIndex];
+        }
+
+        boolean actual = HomeWork2.hasBug(messages);
+        boolean expected = false;
+        for (String message : messages) {
+            if (message.equalsIgnoreCase("Bug")) {
+                expected = true;
+            }
+        }
+
+        System.out.println("Messages: " + Arrays.toString(messages));
+        System.out.println("Actual: " + actual);
+        System.out.println("Expected: " + expected);
+
+        if (actual == expected) {
+            System.out.println("TEST PASSED");
+        }  else {
+            System.out.println("TEST FAILED");
+        }
+
+    }
 
 
+    static Arguments[] randomRanges() {
+        Arguments[] ranges = new Arguments[5];
 
-//git clone https://github.com/shabaqavlad-create/HomeWork2.git
+        for (int i = 0; i < ranges.length; i++) {
+            int start = (int) (Math.random() * 50);
+            int end = start + (int) (Math.random() * 50);
+
+            ranges[i] = Arguments.of(start, end);
+        }
+
+        return ranges;
+    }
+
+    @ParameterizedTest
+    @MethodSource("randomRanges")
+    void getEvenInRangeTest(int start, int end) {
+
+        String actual = HomeWork2.getEvenInRange(start, end);
+
+        String expected = "";
+
+        for (int i = start; i <= end; i++) {
+            if (i % 2 == 0) {
+                if (!expected.isEmpty()) {
+                    expected = expected + " ";
+                }
+                expected = expected + i;
+            }
+        }
+
+
+        System.out.println("Start: " + start);
+        System.out.println("End: " + end);
+        System.out.println("Actual: " + actual);
+        System.out.println("Expected: " + expected);
+
+        if (actual.equals(expected)) {
+            System.out.println("TEST PASSED");
+        } else {
+            System.out.println("TEST FAILED");
+        }
+    }
+
+    static List<List<Integer>> randomLists() {
+        List<List<Integer>> lists = new ArrayList<>();
+
+        for (int i = 0; i < 5; i++) {
+            List<Integer> numbers = new ArrayList<>();
+
+            for (int j = 0; j < 5; j++) {
+                numbers.add((int) (Math.random() * 100) + 1);
+            }
+
+            lists.add(numbers);
+        }
+
+        return lists;
+    }
+
+    @ParameterizedTest
+    @MethodSource("randomLists")
+    void calcAverageTest(List<Integer> list) {
+
+        double actual = HomeWork2.calcAverage(list);
+
+        int sum = 0;
+        for (int number : list) {
+            sum = number + sum;
+        }
+
+        double expected = (double) sum / list.size();
+
+        System.out.println("List: " + list);
+        System.out.println("Actual: " + actual);
+        System.out.println("Expected: " + expected);
+        if (actual == expected) {
+            System.out.println("TEST PASSED");
+        }  else {
+            System.out.println("TEST FAILED");
+        }
+
+    }
+
+    static Arguments[] randomNames() {
+        Arguments[] data = new Arguments[5];
+
+        String[] variants = {"Anna", "Bob", "Mike", "Kate", "Alex"};
+
+        for (int i = 0; i < data.length; i++) {
+            List<String> names = new ArrayList<>();
+
+            for (int j = 0; j < 5; j++) {
+                int randomIndex = (int) (Math.random() * variants.length);
+                names.add(variants[randomIndex]);
+            }
+
+            int removeIndex = (int) (Math.random() * variants.length);
+            String nameToRemove = variants[removeIndex];
+
+            data[i] = Arguments.of(names, nameToRemove);
+        }
+
+        return data;
+    }
+
+
+        @ParameterizedTest
+        @MethodSource("randomNames")
+        void removeSpecificNameTest(List<String> list, String nameToRemove) {
+
+            List<String> actual = HomeWork2.removeSpecificName(list, nameToRemove);
+
+            List<String> expected = new ArrayList<>();
+            for (String name : list){
+                if (!name.equals(nameToRemove)) {
+                    expected.add(name);
+                }
+            }
+
+            System.out.println("Original: " + list);
+            System.out.println("Remove: " + nameToRemove);
+            System.out.println("Actual: " + actual);
+            System.out.println("Expected: " + expected);
+            if (actual.equals(expected)) {
+                System.out.println("TEST PASSED");
+            } else {
+                System.out.println("TEST FAILED");
+            }
+        }
+    }
