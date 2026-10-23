@@ -176,6 +176,50 @@ else {
         }
     }
 
+    @RepeatedTest(5)
+    void blastOffTest() {
+        int start = (int) (Math.random() * 10) + 1;
+
+        String actual = HomeWork2.blastOff(start);
+        String expected = "";
+
+        for (int i = start; i >= 1; i--) {
+            expected = expected + i + " ";
+        }
+
+        expected = expected + "Поехали!";
+
+        System.out.println("Start: " + start);
+        System.out.println("Actual: " + actual);
+        System.out.println("Expected: " + expected);
+
+        if (actual.equals(expected)) {
+            System.out.println("TEST PASSED");
+        } else {
+            System.out.println("TEST FAILED");
+        }
+    }
+
+    @RepeatedTest(5)
+    void sumToNTest() {
+        int n = (int) (Math.random() * 100) + 1;
+
+        int actual = HomeWork2.sumToN(n);
+
+        int expected = 0;
+        for (int i = 1; i <= n; i++) {
+            expected = expected + i;
+        }
+        System.out.println("Start: " + n);
+        System.out.println("Actual: " + actual);
+        System.out.println("Expected: " + expected);
+
+        if (actual == expected) {
+            System.out.println("TEST PASSED");
+        } else {
+            System.out.println("TEST FAILED");
+        }
+    }
 }
 
 
