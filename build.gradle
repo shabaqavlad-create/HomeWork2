@@ -32,3 +32,25 @@ tasks.register('runAllTests', Test) {
 
     finalizedBy 'testFinished'
 }
+
+tasks.register('runWebinarTests', Test) {
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+
+    useJUnitPlatform {
+        includeTags 'webinar'
+    }
+
+    finalizedBy 'testFinished'
+}
+
+tasks.register('runLectureTests', Test) {
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+
+    useJUnitPlatform {
+        includeTags 'lecture'
+    }
+
+    finalizedBy 'testFinished'
+}

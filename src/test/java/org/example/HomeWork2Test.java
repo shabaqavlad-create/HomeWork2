@@ -9,11 +9,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.Arguments;
 import java.util.ArrayList;
 import java.util.List;
-
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import org.junit.jupiter.api.Tag;
 import java.util.Arrays;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+
+@Tag("webinar")
 public class HomeWork2Test {
 
     @BeforeEach
@@ -27,7 +29,7 @@ public class HomeWork2Test {
         System.out.println("========================");
     }
 
-    @Test
+    @RepeatedTest(10)
     void isEvenTest() {
         int number = 4;
 
@@ -42,343 +44,253 @@ public class HomeWork2Test {
 
     @RepeatedTest(20)
     void checkAccessTest() {
-        int age = (int) (Math.random() * 100);
+        int age = 19;
 
         String actual = HomeWork2.checkAccess(age);
-        String expected = age > 18 ? "Allowed" : "Denied";
+        String expected = "Allowed";
 
-        System.out.println("Age: " + age);
-        System.out.println("Actual: " + actual);
-        System.out.println("Expected: " + expected);
-
-        if (actual.equals(expected)) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+        assertEquals(
+                expected,
+                actual,
+                "Ошибка проверки checkAccessTest для age = " + age
+        );
     }
 
-    static Integer[] randomScores() {
-        Integer[] scores = new Integer[5];
-
-        for (int i = 0; i < scores.length; i++) {
-            scores[i] = (int) (Math.random() * 101);
-        }
-
-        return scores;
+    static Arguments[] gradeData() {
+        return new Arguments[] {
+                Arguments.of(0, "E"),
+                Arguments.of(20, "E"),
+                Arguments.of(21, "D"),
+                Arguments.of(40, "D"),
+                Arguments.of(41, "C"),
+                Arguments.of(60, "C"),
+                Arguments.of(61, "B"),
+                Arguments.of(80, "B"),
+                Arguments.of(81, "A"),
+                Arguments.of(100, "A")
+        };
     }
 
     @ParameterizedTest
-    @MethodSource("randomScores")
-    void getGradeTest(int score) {
+    @MethodSource("gradeData")
+    void getGradeTest(int score, String expected) {
 
         String actual = HomeWork2.getGrade(score);
-        String expected;
 
-        if (score >= 0 && score <= 20) {
-            expected = "E";
-        }
-        else if (score >= 21 && score <= 40) {
-            expected = "D";
-        }
-else if (score >= 41 && score <= 60) {
-            expected = "C";
-        }
-else if (score >= 61 && score <= 80) {
-            expected = "B";
-        }
-else {
-            expected = "A";
-        }
-
-        System.out.println("Score: " + score);
-        System.out.println("Actual: " + actual);
-        System.out.println("Expected: " + expected);
-
-        if (actual.equals(expected)) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
-
+        assertEquals(
+                expected,
+                actual,
+                "Ошибка проверки getGrade для score = " + score
+        );
     }
 
-    @Test
+    @RepeatedTest(10)
     void isPositiveTest() {
-        int number = (int) (Math.random() * 201) - 100;
+        int number = 0;
 
         boolean actual = HomeWork2.isPositive(number);
-        boolean expected = number >= 0 ? true : false;
+        boolean expected = true;
 
-        System.out.println("Number: " + number);
-        System.out.println("Actual: " + actual);
-        System.out.println("Expected: " + expected);
-
-        if (actual == expected) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+        assertEquals(
+                expected,
+                actual,
+                "Ошибка проверки isPositive для number = " + number);
     }
 
-    @Test
+    @RepeatedTest(10)
     void findMaxTest() {
-        int [] numbers = new int[5];
-
-        for (int i = 0; i < numbers.length; i++) {
-            numbers[i] = (int) (Math.random() * 201) - 100;
-        }
+        int [] numbers = {5, -10, 42, 7, 0};
 
         int actual = HomeWork2.findMax(numbers);
-        int expected = numbers[0];
-        for (int num : numbers) {
-            if (num > expected) {
-                expected = num;
-            }
-        }
-
-        System.out.println("Numbers: " + Arrays.toString(numbers));
-        System.out.println("Actual: " + actual);
-        System.out.println("Expected: " + expected);
-
-        if (actual == expected) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+        int expected = 42;
+        assertEquals(
+                expected,
+                actual,
+                "Ошибка проверки findMax для numbers = " + Arrays.toString(numbers));
     }
 
-    @Test
+    @RepeatedTest(10)
     void reverseTest() {
-        String[] words = new String[5];
-
-        for (int i = 0; i < words.length; i++) {
-            words[i] = String.valueOf((int) (Math.random() * 100));
-        }
+        String[] words = {"One", "Two", "Three"};
 
         String[] actual = HomeWork2.reverse(words);
-        String[] expected = new String[words.length];
+        String[] expected = {"Three", "Two", "One"};
 
-        int rev = 0;
-        for (int i = words.length -1; i >= 0; i--) {
-            expected[rev] = words[i];
-            rev++ ;
-        }
-
-        System.out.println("Original: " + Arrays.toString(words));
-        System.out.println("Actual: " + Arrays.toString(actual));
-        System.out.println("Expected: " + Arrays.toString(expected));
-
-        if (Arrays.equals(actual, expected)) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+        assertArrayEquals(
+                expected,
+                actual,
+                "Ошибка проверки reverse для words = " + Arrays.toString(words)
+        );
     }
 
-    @RepeatedTest(5)
+    @RepeatedTest(10)
     void blastOffTest() {
-        int start = (int) (Math.random() * 10) + 1;
+        int start = 5;
 
         String actual = HomeWork2.blastOff(start);
-        String expected = "";
+        String expected = "5 4 3 2 1 Поехали!";
 
-        for (int i = start; i >= 1; i--) {
-            expected = expected + i + " ";
-        }
-
-        expected = expected + "Поехали!";
-
-        System.out.println("Start: " + start);
-        System.out.println("Actual: " + actual);
-        System.out.println("Expected: " + expected);
-
-        if (actual.equals(expected)) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+        assertEquals(
+                expected,
+                actual,
+                "Ошибка проверки blastOff для start = " + start);
     }
 
-    @RepeatedTest(5)
+    @RepeatedTest(10)
     void sumToNTest() {
-        int n = (int) (Math.random() * 100) + 1;
+        int n = 5;
 
         int actual = HomeWork2.sumToN(n);
+        int expected = 15;
 
-        int expected = 0;
-        for (int i = 1; i <= n; i++) {
-            expected = expected + i;
-        }
-        System.out.println("Start: " + n);
-        System.out.println("Actual: " + actual);
-        System.out.println("Expected: " + expected);
-
-        if (actual == expected) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+        assertEquals(
+                expected,
+                actual,
+                "Ошибка проверки sumToN для n = " + n);
     }
 
-    @RepeatedTest(5)
+    @RepeatedTest(10)
     void hasBugTest() {
-        String[] variants = {"Info", "Warning", "Error", "Bug", "Test"};
-        String[] messages = new String[5];
-
-        for (int i = 0; i < messages.length; i++) {
-            int randomIndex = (int) (Math.random() * variants.length);
-            messages[i] = variants[randomIndex];
-        }
+        String[] messages = {"Info", "Warning", "Error", "Bug", "Test"};
 
         boolean actual = HomeWork2.hasBug(messages);
-        boolean expected = false;
-        for (String message : messages) {
-            if (message.equalsIgnoreCase("Bug")) {
-                expected = true;
-            }
-        }
-
-        System.out.println("Messages: " + Arrays.toString(messages));
-        System.out.println("Actual: " + actual);
-        System.out.println("Expected: " + expected);
-
-        if (actual == expected) {
-            System.out.println("TEST PASSED");
-        }  else {
-            System.out.println("TEST FAILED");
-        }
-
+        boolean expected = true;
+        assertEquals(
+                expected,
+                actual,
+                "Ошибка проверки hasBug для messages = " + Arrays.toString(messages));
     }
 
 
-    static Arguments[] randomRanges() {
-        Arguments[] ranges = new Arguments[5];
-
-        for (int i = 0; i < ranges.length; i++) {
-            int start = (int) (Math.random() * 50);
-            int end = start + (int) (Math.random() * 50);
-
-            ranges[i] = Arguments.of(start, end);
-        }
-
-        return ranges;
+    static Arguments[] evenRangeData() {
+        return new Arguments[] {
+                Arguments.of(2, 5, "2 4"),
+                Arguments.of(1, 6, "2 4 6"),
+                Arguments.of(0, 0, "0"),
+                Arguments.of(1, 1, ""),
+                Arguments.of(2, 2, "2"),
+                Arguments.of(3, 7, "4 6"),
+                Arguments.of(10, 15, "10 12 14"),
+                Arguments.of(20, 21, "20"),
+                Arguments.of(5, 10, "6 8 10"),
+                Arguments.of(8, 12, "8 10 12")
+        };
     }
 
     @ParameterizedTest
-    @MethodSource("randomRanges")
-    void getEvenInRangeTest(int start, int end) {
+    @MethodSource("evenRangeData")
+    void getEvenInRangeTest(int start, int end, String expected) {
 
         String actual = HomeWork2.getEvenInRange(start, end);
-
-        String expected = "";
-
-        for (int i = start; i <= end; i++) {
-            if (i % 2 == 0) {
-                if (!expected.isEmpty()) {
-                    expected = expected + " ";
-                }
-                expected = expected + i;
-            }
-        }
-
-
-        System.out.println("Start: " + start);
-        System.out.println("End: " + end);
-        System.out.println("Actual: " + actual);
-        System.out.println("Expected: " + expected);
-
-        if (actual.equals(expected)) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+        assertEquals(
+                expected,
+                actual,
+                "Ошибка проверки getEvenInRange для start = "
+                        + start + ", end = " + end
+        );
     }
 
-    static List<List<Integer>> randomLists() {
-        List<List<Integer>> lists = new ArrayList<>();
-
-        for (int i = 0; i < 5; i++) {
-            List<Integer> numbers = new ArrayList<>();
-
-            for (int j = 0; j < 5; j++) {
-                numbers.add((int) (Math.random() * 100) + 1);
-            }
-
-            lists.add(numbers);
-        }
-
-        return lists;
+    static Arguments[] averageData() {
+        return new Arguments[] {
+                Arguments.of(List.of(1, 2, 3), 2.0),
+                Arguments.of(List.of(2, 3), 2.5),
+                Arguments.of(List.of(10, 20, 30), 20.0),
+                Arguments.of(List.of(5, 5, 5, 5), 5.0),
+                Arguments.of(List.of(1, 2, 3, 4), 2.5),
+                Arguments.of(List.of(100), 100.0),
+                Arguments.of(List.of(0, 10), 5.0),
+                Arguments.of(List.of(-5, 5), 0.0),
+                Arguments.of(List.of(10, 15, 20, 25), 17.5),
+                Arguments.of(List.of(3, 6, 9, 12, 15), 9.0)
+        };
     }
 
     @ParameterizedTest
-    @MethodSource("randomLists")
-    void calcAverageTest(List<Integer> list) {
+    @MethodSource("averageData")
+    void calcAverageTest(List<Integer> list, double expected) {
 
         double actual = HomeWork2.calcAverage(list);
 
-        int sum = 0;
-        for (int number : list) {
-            sum = number + sum;
-        }
-
-        double expected = (double) sum / list.size();
-
-        System.out.println("List: " + list);
-        System.out.println("Actual: " + actual);
-        System.out.println("Expected: " + expected);
-        if (actual == expected) {
-            System.out.println("TEST PASSED");
-        }  else {
-            System.out.println("TEST FAILED");
-        }
-
+        assertEquals(
+                expected,
+                actual,
+                0.0001,
+                "Ошибка проверки calcAverage для list = " + list
+        );
     }
 
-    static Arguments[] randomNames() {
-        Arguments[] data = new Arguments[5];
-
-        String[] variants = {"Anna", "Bob", "Mike", "Kate", "Alex"};
-
-        for (int i = 0; i < data.length; i++) {
-            List<String> names = new ArrayList<>();
-
-            for (int j = 0; j < 5; j++) {
-                int randomIndex = (int) (Math.random() * variants.length);
-                names.add(variants[randomIndex]);
-            }
-
-            int removeIndex = (int) (Math.random() * variants.length);
-            String nameToRemove = variants[removeIndex];
-
-            data[i] = Arguments.of(names, nameToRemove);
-        }
-
-        return data;
+    static Arguments[] removeNameData() {
+        return new Arguments[] {
+                Arguments.of(
+                        List.of("Anna", "Bob", "Anna", "Mike"),
+                        "Anna",
+                        List.of("Bob", "Mike")
+                ),
+                Arguments.of(
+                        List.of("Bob", "Bob", "Mike"),
+                        "Bob",
+                        List.of("Mike")
+                ),
+                Arguments.of(
+                        List.of("Kate", "Alex"),
+                        "Mike",
+                        List.of("Kate", "Alex")
+                ),
+                Arguments.of(
+                        List.of("Alex"),
+                        "Alex",
+                        List.of()
+                ),
+                Arguments.of(
+                        List.of("Anna", "Bob"),
+                        "Mike",
+                        List.of("Anna", "Bob")
+                ),
+                Arguments.of(
+                        List.of("Mike", "Mike", "Mike"),
+                        "Mike",
+                        List.of()
+                ),
+                Arguments.of(
+                        List.of("Anna", "Kate", "Alex"),
+                        "Kate",
+                        List.of("Anna", "Alex")
+                ),
+                Arguments.of(
+                        List.of("Bob", "Alex", "Bob"),
+                        "Alex",
+                        List.of("Bob", "Bob")
+                ),
+                Arguments.of(
+                        List.of("Anna", "Mike", "Kate", "Mike"),
+                        "Mike",
+                        List.of("Anna", "Kate")
+                ),
+                Arguments.of(
+                        List.of("Alex", "Bob", "Kate"),
+                        "Anna",
+                        List.of("Alex", "Bob", "Kate")
+                )
+        };
     }
 
 
-        @ParameterizedTest
-        @MethodSource("randomNames")
-        void removeSpecificNameTest(List<String> list, String nameToRemove) {
+    @ParameterizedTest
+    @MethodSource("removeNameData")
+    void removeSpecificNameTest(
+            List<String> list,
+            String nameToRemove,
+            List<String> expected
+    )
+    {
+        List<String> actual =
+                HomeWork2.removeSpecificName(list, nameToRemove);
 
-            List<String> actual = HomeWork2.removeSpecificName(list, nameToRemove);
-
-            List<String> expected = new ArrayList<>();
-            for (String name : list){
-                if (!name.equals(nameToRemove)) {
-                    expected.add(name);
-                }
-            }
-
-            System.out.println("Original: " + list);
-            System.out.println("Remove: " + nameToRemove);
-            System.out.println("Actual: " + actual);
-            System.out.println("Expected: " + expected);
-            if (actual.equals(expected)) {
-                System.out.println("TEST PASSED");
-            } else {
-                System.out.println("TEST FAILED");
-            }
-        }
+        assertEquals(
+                expected,
+                actual,
+                "Ошибка проверки removeSpecificName для list = "
+                        + list + ", nameToRemove = " + nameToRemove
+        );
+    }
     }
