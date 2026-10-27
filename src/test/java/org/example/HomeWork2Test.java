@@ -12,6 +12,8 @@ import java.util.List;
 
 import java.util.Arrays;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class HomeWork2Test {
 
     @BeforeEach
@@ -27,20 +29,15 @@ public class HomeWork2Test {
 
     @Test
     void isEvenTest() {
-        int number = (int) (Math.random() * 100) + 1;
+        int number = 4;
 
         boolean actual = HomeWork2.isEven(number);
-        boolean expected = number % 2 == 0;
-
-        System.out.println("Number: " + number);
-        System.out.println("Actual: " + actual);
-        System.out.println("Expected: " + expected);
-
-        if (actual == expected) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+        boolean expected = true;
+        assertEquals(
+                expected,
+                actual,
+                "Ошибка проверки isEven для number = " + number
+        );
     }
 
     @RepeatedTest(20)
