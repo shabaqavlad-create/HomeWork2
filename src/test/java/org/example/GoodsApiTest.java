@@ -13,6 +13,11 @@ import java.util.UUID;
 
 import static org.hamcrest.Matchers.hasItem;
 
+import io.restassured.response.Response;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class GoodsApiTest {
 
@@ -82,4 +87,43 @@ public class GoodsApiTest {
                 .statusCode(200)
                 .body("goods.name", hasItem(productName));
     }
+
+    @Test
+    void addGoodAndCheckInListAssertJTest() {
+        String productName = "Test Product-" + UUID.randomUUID();
+        double productPrice = 200.5;
+
+        String requestBody = "{"
+                + "\"name\":\"" + productName + "\","
+                + "\"price\":" + productPrice
+                + "}";
+
+        RequestSpecification requestSpecPost = given()
+                .baseUri("http://localhost:8080")
+                .auth().preemptive().basic("admin", "secret123")
+                .contentType(ContentType.JSON)
+                .body(requestBody);
+
+        requestSpecPost
+                .when()
+                .post("/goods/add")
+                .then()
+                .statusCode(200);
+
+        Response response = given()
+                .baseUri("http://localhost:8080")
+                .queryParam("page", 0)
+                .queryParam("size", 10)
+                .when()
+                .get("/goods/list");
+
+        assertThat(response.getStatusCode())
+                .isEqualTo(200);
+
+        List<String> productNames = response.jsonPath().getList("goods.name", String.class);
+
+        assertThat(productNames)
+                .contains(productName);
+    }
+
 }
