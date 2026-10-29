@@ -57,3 +57,14 @@ tasks.register('runLectureTests', Test) {
 
     finalizedBy 'testFinished'
 }
+
+tasks.register('runApiTests', Test) {
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+
+    useJUnitPlatform {
+        includeTags 'api_test'
+    }
+
+    finalizedBy 'testFinished'
+}
