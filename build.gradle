@@ -16,6 +16,9 @@ dependencies {
 
     testImplementation 'io.rest-assured:rest-assured:6.3.0'
     testImplementation 'org.assertj:assertj-core:3.27.7'
+
+    testImplementation 'org.seleniumhq.selenium:selenium-java:4.52.0'
+    testImplementation 'com.codeborne:selenide:7.19.1'
 }
 
 test {
