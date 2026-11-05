@@ -86,8 +86,10 @@ public class SeleniumGoodsTest {
                 .click();
 
 
-        WebElement createdProduct = driver.findElement(
-                By.cssSelector(".product-card[data-name='" + productName + "']")
+        WebElement createdProduct = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        By.cssSelector(".product-card[data-name='" + productName + "']")
+                )
         );
 
         assertTrue(
@@ -95,4 +97,126 @@ public class SeleniumGoodsTest {
                 "Созданный товар не отображается на витрине"
         );
     }
+
+    @Test
+    void addProductToCartTest() {
+
+        driver.get("http://localhost:8080");
+
+        WebDriverWait wait =
+                new WebDriverWait(driver, Duration.ofSeconds(5));
+
+        WebElement productCard = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        By.cssSelector(".product-card")
+                )
+        );
+
+        String productName = productCard.getAttribute("data-name");
+
+        productCard.findElement(
+                By.cssSelector("button[data-action='add-to-cart']")
+        ).click();
+
+        driver.findElement(By.id("open-cart-btn"))
+                .click();
+
+        wait.until(
+                ExpectedConditions.textToBePresentInElementLocated(
+                        By.id("cart-items"),
+                        productName
+                )
+        );
+
+        WebElement cartItems = driver.findElement(By.id("cart-items"));
+
+        assertTrue(
+                cartItems.getText().contains(productName),
+                "Добавленный товар не отображается в корзине"
+        );
+    }
+
+    @Test
+    void wrongAdminLoginTest() {
+
+        driver.get("http://localhost:8080/admin");
+
+        WebDriverWait wait =
+                new WebDriverWait(driver, Duration.ofSeconds(5));
+
+        driver.findElement(By.id("username"))
+                .sendKeys("adminn");
+
+        driver.findElement(By.id("password"))
+                .sendKeys("secret1234");
+
+        driver.findElement(By.cssSelector("button[type='submit']"))
+                .click();
+
+        wait.until(
+                ExpectedConditions.urlContains("error")
+        );
+
+        assertTrue(
+                driver.getCurrentUrl().contains("error"),
+                "При неверных данных пользователь не должен попасть в админку"
+        );
+    }
+
+    @Test
+    void cartPersistsAfterRefreshTest() {
+
+        driver.get("http://localhost:8080");
+
+        WebDriverWait wait =
+                new WebDriverWait(driver, Duration.ofSeconds(5));
+
+        WebElement productCard = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        By.cssSelector(".product-card")
+                )
+        );
+
+        String productName = productCard.getAttribute("data-name");
+
+        productCard.findElement(
+                By.cssSelector("button[data-action='add-to-cart']")
+        ).click();
+
+        driver.findElement(By.id("open-cart-btn"))
+                .click();
+
+        wait.until(
+                ExpectedConditions.textToBePresentInElementLocated(
+                        By.id("cart-items"),
+                        productName
+                )
+        );
+
+        driver.navigate().refresh();
+        wait.until(
+                ExpectedConditions.textToBePresentInElementLocated(
+                        By.id("open-cart-btn"),
+                        "(1)"
+                )
+        );
+
+        driver.findElement(By.id("open-cart-btn"))
+                .click();
+
+        wait.until(
+                ExpectedConditions.textToBePresentInElementLocated(
+                        By.id("cart-items"),
+                        productName
+                )
+        );
+
+        WebElement cartItems =
+                driver.findElement(By.id("cart-items"));
+
+        assertTrue(
+                cartItems.getText().contains(productName),
+                "Товар пропал из корзины после обновления страницы");
+    }
+
 }
