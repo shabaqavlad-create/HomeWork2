@@ -19,10 +19,16 @@ dependencies {
 
     testImplementation 'org.seleniumhq.selenium:selenium-java:4.52.0'
     testImplementation 'com.codeborne:selenide:7.19.1'
+
+    testImplementation 'org.aeonbits.owner:owner:1.0.12'
 }
 
 test {
     useJUnitPlatform()
+
+    testLogging {
+        showStandardStreams = true
+    }
 }
 
 tasks.register('testFinished') {
