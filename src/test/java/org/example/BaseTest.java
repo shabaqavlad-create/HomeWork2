@@ -4,6 +4,7 @@ import com.codeborne.selenide.Configuration;
 import org.example.pages.MainPage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.example.pages.AdminLoginPage;
 
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static org.example.config.ConfigProvider.CONFIG;
@@ -11,6 +12,8 @@ import static org.example.config.ConfigProvider.CONFIG;
 public class BaseTest {
 
     protected MainPage mainPage = new MainPage();
+
+    protected AdminLoginPage adminLoginPage = new AdminLoginPage();
 
     @BeforeAll
     static void setUp() {

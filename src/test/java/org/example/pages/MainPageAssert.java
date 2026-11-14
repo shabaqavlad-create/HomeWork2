@@ -15,4 +15,28 @@ public class MainPageAssert
         actual.cartButton.shouldBe(visible);
         return this;
     }
+
+    public MainPageAssert productsListIsVisible() {
+        actual.productsList.shouldBe(visible);
+        return this;
+    }
+
+    public MainPageAssert productCardsAreVisible() {
+        actual.productCards.forEach(
+                productCard -> productCard.shouldBe(visible)
+        );
+        return this;
+    }
+
+    public MainPageAssert addToCartButtonsAreVisible() {
+        actual.addToCartButtons.forEach(
+                button -> button.shouldBe(visible)
+        );
+        return this;
+    }
+
+    public MainPageAssert makeOrderButtonIsVisible() {
+        actual.makeOrderButton.shouldBe(visible);
+        return this;
+    }
 }

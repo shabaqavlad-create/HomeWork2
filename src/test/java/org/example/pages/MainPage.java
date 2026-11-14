@@ -17,6 +17,16 @@ public class MainPage {
      final SelenideElement cartButton =
             $("#open-cart-btn");
 
+    final SelenideElement productsList =
+            $("#products-list");
+
+    final ElementsCollection addToCartButtons =
+            $$("button[data-action='add-to-cart']");
+
+    final SelenideElement makeOrderButton =
+            $("#makeOrder");
+
+
     public MainPage addProductToCart(String productName) {
 
         SelenideElement productCard =
@@ -41,4 +51,20 @@ public class MainPage {
     public MainPageAssert check() {
         return new MainPageAssert(this);
     }
+
+    public MainPage scrollToProducts() {
+        productsList.scrollIntoCenter();
+        return this;
+    }
+
+    public MainPage addFirstProductToCart() {
+        addToCartButtons.first().click();
+        return this;
+    }
+
+    public MainPage makeOrder() {
+        makeOrderButton.click();
+        return this;
+    }
+
 }
