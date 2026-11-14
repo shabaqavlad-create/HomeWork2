@@ -35,4 +35,23 @@ public class PageObjectTest extends BaseTest {
                 .passwordInputHasValue(CONFIG.adminPassword());
     }
 
+    @Test
+    void createProductInAdminTest() {
+
+        String productName =
+                "PageObject товар " + System.currentTimeMillis();
+
+        int productPrice = 100;
+
+        adminLoginPage
+                .openPage()
+                .login(
+                        CONFIG.adminUsername(),
+                        CONFIG.adminPassword()
+                )
+                .createProduct(productName, productPrice)
+                .check()
+                .productCreatedToastIsVisible();
+    }
+
 }

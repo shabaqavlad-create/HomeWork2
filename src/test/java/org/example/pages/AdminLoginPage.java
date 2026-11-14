@@ -37,12 +37,12 @@ public class AdminLoginPage {
         return this;
     }
 
-    public AdminLoginPage login(String username, String password) {
+    public AdminPage login(String username, String password) {
         usernameInput.setValue(username);
         passwordInput.setValue(password);
         loginButton.click();
 
-        return this;
+        return new AdminPage();
     }
 
     public AdminLoginPageAssert check() {

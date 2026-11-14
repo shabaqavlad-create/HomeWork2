@@ -1,0 +1,35 @@
+package org.example.pages;
+
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
+
+import static com.codeborne.selenide.Selenide.*;
+
+public class AdminPage {
+
+    final SelenideElement productNameInput =
+            $("#n-name");
+
+    final SelenideElement productPriceInput =
+            $("#n-price");
+
+    final SelenideElement addProductButton =
+            $("#add-btn");
+
+    final ElementsCollection toasts =
+            $$(".toast");
+
+    public AdminPage createProduct(String name, int price) {
+
+        productNameInput.setValue(name);
+        productPriceInput.setValue(String.valueOf(price));
+        addProductButton.click();
+
+        return this;
+    }
+
+    public AdminPageAssert check() {
+        return new AdminPageAssert(this);
+    }
+
+}
