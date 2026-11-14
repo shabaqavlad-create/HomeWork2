@@ -2,8 +2,7 @@ package org.example.pages;
 
 import org.assertj.core.api.AbstractAssert;
 
-import static com.codeborne.selenide.Condition.attribute;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 
 public class MainPageAssert
         extends AbstractAssert<MainPageAssert, MainPage> {
@@ -36,10 +35,6 @@ public class MainPageAssert
         return this;
     }
 
-    public MainPageAssert makeOrderButtonIsVisible() {
-        actual.makeOrderButton.shouldBe(visible);
-        return this;
-    }
 
     public MainPageAssert productHasNameAndPrice(
             String productName,
@@ -55,6 +50,15 @@ public class MainPageAssert
                                 String.valueOf(productPrice)
                         )
                 );
+
+        return this;
+    }
+
+    public MainPageAssert orderAcceptedToastIsVisible() {
+        actual.toasts
+                .last()
+                .shouldBe(visible)
+                .shouldHave(text("Заказ принят в обработку!"));
 
         return this;
     }

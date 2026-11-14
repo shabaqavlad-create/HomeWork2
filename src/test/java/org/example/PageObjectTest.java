@@ -8,32 +8,6 @@ import static org.example.config.ConfigProvider.CONFIG;
 
 public class PageObjectTest extends BaseTest {
 
-    @Test
-    void pageObjectWorksTest() {
-
-        mainPage
-                .openPage()
-                .check()
-                .cartButtonIsVisible();
-    }
-
-    @Test
-    void adminLoginPageWorksTest() {
-
-        adminLoginPage
-                .openPage()
-                .check()
-                .usernameInputIsVisible()
-                .passwordInputIsVisible()
-                .loginButtonIsVisible();
-
-        adminLoginPage
-                .setUsername(CONFIG.adminUsername())
-                .setPassword(CONFIG.adminPassword())
-                .check()
-                .usernameInputHasValue(CONFIG.adminUsername())
-                .passwordInputHasValue(CONFIG.adminPassword());
-    }
 
     @Test
     void createProductInAdminTest() {
@@ -91,6 +65,43 @@ public class PageObjectTest extends BaseTest {
                         editedName,
                         editedPrice
                 );
+    }
+
+    @Test
+    void buyThreeProductsTest() {
+
+        int expectedTotal =
+                CONFIG.productPrice() * 3;
+
+        mainPage
+                .openPage()
+                .addProductToCart(CONFIG.productName())
+                .addProductToCart(CONFIG.productName())
+                .addProductToCart(CONFIG.productName())
+                .openCart()
+                .check()
+                .cartIsVisible()
+                .productIsInCart(CONFIG.productName())
+                .totalIs(expectedTotal)
+                .page()
+                .makeOrder()
+                .check()
+                .orderAcceptedToastIsVisible();
+    }
+
+    @Test
+    void differentProductsTotalTest() {
+
+        mainPage.openPage();
+
+        int expectedTotal =
+                mainPage.addFirstDifferentProductsToCart(3);
+
+        mainPage
+                .openCart()
+                .check()
+                .cartIsVisible()
+                .totalIs(expectedTotal);
     }
 
 }

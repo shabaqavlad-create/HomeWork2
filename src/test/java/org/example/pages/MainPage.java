@@ -23,8 +23,6 @@ public class MainPage {
     final ElementsCollection addToCartButtons =
             $$("button[data-action='add-to-cart']");
 
-    final SelenideElement makeOrderButton =
-            $("#makeOrder");
 
 
     public MainPage addProductToCart(String productName) {
@@ -39,9 +37,9 @@ public class MainPage {
         return this;
     }
 
-    public MainPage openCart() {
+    public CartPopup openCart() {
         cartButton.click();
-        return this;
+        return cartPopup;
     }
 
     public MainPage openPage() {
@@ -62,9 +60,69 @@ public class MainPage {
         return this;
     }
 
-    public MainPage makeOrder() {
-        makeOrderButton.click();
-        return this;
+    final ElementsCollection toasts =
+            $$(".toast");
+
+    private final CartPopup cartPopup =
+            new CartPopup();
+
+    public class CartPopup {
+
+        final SelenideElement cartModal =
+                $("#cartModal");
+
+        final SelenideElement cartItems =
+                $("#cart-items");
+
+        final ElementsCollection cartItemRows =
+                $$(".cart-item");
+
+        final SelenideElement makeOrderButton =
+                $("#makeOrder");
+
+        public CartPopup removeProduct(String productName) {
+
+            SelenideElement cartItem =
+                    cartItemRows.findBy(text(productName));
+
+            cartItem
+                    .$("[data-action='remove']")
+                    .click();
+
+            return this;
+        }
+
+        public MainPage makeOrder() {
+            makeOrderButton.click();
+            return MainPage.this;
+        }
+
+        public CartPopupAssert check() {
+            return new CartPopupAssert(this);
+        }
+    }
+
+    public int addFirstDifferentProductsToCart(int count) {
+
+        int total = 0;
+
+        for (int i = 0; i < count; i++) {
+
+            SelenideElement productCard =
+                    productCards.get(i);
+
+            int price = Integer.parseInt(
+                    productCard.getAttribute("data-price")
+            );
+
+            productCard
+                    .$("[data-action='add-to-cart']")
+                    .click();
+
+            total += price;
+        }
+
+        return total;
     }
 
 }
