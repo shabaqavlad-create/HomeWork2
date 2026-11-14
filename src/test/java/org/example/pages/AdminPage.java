@@ -32,4 +32,28 @@ public class AdminPage {
         return new AdminPageAssert(this);
     }
 
+    public AdminPage editProduct(
+            String currentName,
+            String newName,
+            int newPrice
+    ) {
+
+        SelenideElement productRow =
+                $x("//input[@value='" + currentName + "']/ancestor::tr");
+
+        productRow
+                .$("input[type='text']")
+                .setValue(newName);
+
+        productRow
+                .$("input[type='number']")
+                .setValue(String.valueOf(newPrice));
+
+        productRow
+                .$x(".//button[normalize-space()='Сохранить']")
+                .click();
+
+        return this;
+    }
+
 }

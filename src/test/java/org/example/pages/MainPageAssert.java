@@ -2,6 +2,7 @@ package org.example.pages;
 
 import org.assertj.core.api.AbstractAssert;
 
+import static com.codeborne.selenide.Condition.attribute;
 import static com.codeborne.selenide.Condition.visible;
 
 public class MainPageAssert
@@ -39,4 +40,23 @@ public class MainPageAssert
         actual.makeOrderButton.shouldBe(visible);
         return this;
     }
+
+    public MainPageAssert productHasNameAndPrice(
+            String productName,
+            int productPrice
+    ) {
+
+        actual.productCards
+                .findBy(attribute("data-name", productName))
+                .shouldBe(visible)
+                .shouldHave(
+                        attribute(
+                                "data-price",
+                                String.valueOf(productPrice)
+                        )
+                );
+
+        return this;
+    }
+
 }

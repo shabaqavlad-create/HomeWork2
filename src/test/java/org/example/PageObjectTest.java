@@ -54,4 +54,43 @@ public class PageObjectTest extends BaseTest {
                 .productCreatedToastIsVisible();
     }
 
+    @Test
+    void editProductInAdminTest() {
+
+        String originalName =
+                "PageObject edit " + System.currentTimeMillis();
+
+        String editedName =
+                originalName + " updated";
+
+        int originalPrice = 90;
+        int editedPrice = 120;
+
+        adminLoginPage
+                .openPage()
+                .login(
+                        CONFIG.adminUsername(),
+                        CONFIG.adminPassword()
+                )
+                .createProduct(originalName, originalPrice)
+                .check()
+                .productCreatedToastIsVisible()
+                .page()
+                .editProduct(
+                        originalName,
+                        editedName,
+                        editedPrice
+                )
+                .check()
+                .productUpdatedToastIsVisible();
+
+        mainPage
+                .openPage()
+                .check()
+                .productHasNameAndPrice(
+                        editedName,
+                        editedPrice
+                );
+    }
+
 }

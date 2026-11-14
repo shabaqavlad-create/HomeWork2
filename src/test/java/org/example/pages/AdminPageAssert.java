@@ -20,4 +20,17 @@ public class AdminPageAssert
 
         return this;
     }
+
+    public AdminPageAssert productUpdatedToastIsVisible() {
+        actual.toasts
+                .last()
+                .shouldBe(visible)
+                .shouldHave(text("обновлен"));
+
+        return this;
+    }
+
+    public AdminPage page() {
+        return actual;
+    }
 }
