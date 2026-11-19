@@ -3,6 +3,8 @@ package org.example.pages;
 import org.assertj.core.api.AbstractAssert;
 
 import static com.codeborne.selenide.Condition.*;
+import io.qameta.allure.Step;
+
 
 public class MainPageAssert
         extends AbstractAssert<MainPageAssert, MainPage> {
@@ -11,16 +13,19 @@ public class MainPageAssert
         super(actual, MainPageAssert.class);
     }
 
+    @Step("Проверить, что кнопка корзины отображается")
     public MainPageAssert cartButtonIsVisible() {
         actual.cartButton.shouldBe(visible);
         return this;
     }
 
+    @Step("Проверить, что список товаров отображается")
     public MainPageAssert productsListIsVisible() {
         actual.productsList.shouldBe(visible);
         return this;
     }
 
+    @Step("Проверить, что карточки товаров отображаются")
     public MainPageAssert productCardsAreVisible() {
         actual.productCards.forEach(
                 productCard -> productCard.shouldBe(visible)
@@ -28,6 +33,7 @@ public class MainPageAssert
         return this;
     }
 
+    @Step("Проверить, что кнопки добавления товара отображаются")
     public MainPageAssert addToCartButtonsAreVisible() {
         actual.addToCartButtons.forEach(
                 button -> button.shouldBe(visible)
@@ -36,6 +42,7 @@ public class MainPageAssert
     }
 
 
+    @Step("Проверить товар {productName} с ценой {productPrice}")
     public MainPageAssert productHasNameAndPrice(
             String productName,
             int productPrice
@@ -54,6 +61,7 @@ public class MainPageAssert
         return this;
     }
 
+    @Step("Проверить уведомление об успешном оформлении заказа")
     public MainPageAssert orderAcceptedToastIsVisible() {
         actual.toasts
                 .last()

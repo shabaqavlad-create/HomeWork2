@@ -4,6 +4,7 @@ import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.*;
+import io.qameta.allure.Step;
 
 
 
@@ -24,7 +25,7 @@ public class MainPage {
             $$("button[data-action='add-to-cart']");
 
 
-
+    @Step("Добавить товар {productName} в корзину")
     public MainPage addProductToCart(String productName) {
 
         SelenideElement productCard =
@@ -37,11 +38,13 @@ public class MainPage {
         return this;
     }
 
+    @Step("Открыть корзину")
     public CartPopup openCart() {
         cartButton.click();
         return cartPopup;
     }
 
+    @Step("Открыть главную страницу")
     public MainPage openPage() {
         open("/");
         return this;
@@ -50,11 +53,13 @@ public class MainPage {
         return new MainPageAssert(this);
     }
 
+    @Step("Проскролить к списку товаров")
     public MainPage scrollToProducts() {
         productsList.scrollIntoCenter();
         return this;
     }
 
+    @Step("Добавить первый товар в корзину")
     public MainPage addFirstProductToCart() {
         addToCartButtons.first().click();
         return this;
@@ -80,6 +85,7 @@ public class MainPage {
         final SelenideElement makeOrderButton =
                 $("#makeOrder");
 
+        @Step("Удалить товар {productName} из корзины")
         public CartPopup removeProduct(String productName) {
 
             SelenideElement cartItem =
@@ -92,6 +98,7 @@ public class MainPage {
             return this;
         }
 
+        @Step("Оформить заказ")
         public MainPage makeOrder() {
             makeOrderButton.click();
             return MainPage.this;
@@ -102,6 +109,7 @@ public class MainPage {
         }
     }
 
+    @Step("Добавить первые {count} разных товаров в корзину")
     public int addFirstDifferentProductsToCart(int count) {
 
         int total = 0;

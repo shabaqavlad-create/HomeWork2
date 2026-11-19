@@ -4,6 +4,8 @@ import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 
 import static com.codeborne.selenide.Selenide.*;
+import io.qameta.allure.Step;
+
 
 public class AdminPage {
 
@@ -19,6 +21,7 @@ public class AdminPage {
     final ElementsCollection toasts =
             $$(".toast");
 
+    @Step("Создать товар {name} стоимостью {price}")
     public AdminPage createProduct(String name, int price) {
 
         productNameInput.setValue(name);
@@ -32,6 +35,7 @@ public class AdminPage {
         return new AdminPageAssert(this);
     }
 
+    @Step("Отредактировать товар {currentName}")
     public AdminPage editProduct(
             String currentName,
             String newName,

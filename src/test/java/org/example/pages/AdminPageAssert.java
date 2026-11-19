@@ -4,6 +4,8 @@ import org.assertj.core.api.AbstractAssert;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
+import io.qameta.allure.Step;
+
 
 public class AdminPageAssert
         extends AbstractAssert<AdminPageAssert, AdminPage> {
@@ -12,6 +14,7 @@ public class AdminPageAssert
         super(actual, AdminPageAssert.class);
     }
 
+    @Step("Проверить уведомление об успешном создании товара")
     public AdminPageAssert productCreatedToastIsVisible() {
         actual.toasts
                 .last()
@@ -21,6 +24,7 @@ public class AdminPageAssert
         return this;
     }
 
+    @Step("Проверить уведомление об успешном обновлении товара")
     public AdminPageAssert productUpdatedToastIsVisible() {
         actual.toasts
                 .last()

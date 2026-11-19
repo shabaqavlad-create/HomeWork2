@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'io.qameta.allure' version '4.3.1'
 }
 
 group = 'org.example'
@@ -8,6 +9,8 @@ version = '1.0-SNAPSHOT'
 repositories {
     mavenCentral()
 }
+
+def allureVersion = '2.35.5'
 
 dependencies {
     testImplementation platform('org.junit:junit-bom:6.0.0')
@@ -21,6 +24,14 @@ dependencies {
     testImplementation 'com.codeborne:selenide:7.19.1'
 
     testImplementation 'org.aeonbits.owner:owner:1.0.12'
+
+    testImplementation platform("io.qameta.allure:allure-bom:$allureVersion")
+    testImplementation 'io.qameta.allure:allure-selenide'
+    testImplementation 'io.qameta.allure:allure-rest-assured'
+}
+
+allure {
+    version = '2.42.1'
 }
 
 test {
